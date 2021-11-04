@@ -3,20 +3,6 @@ Package: BRINDA
 Title: Biomarker Reflecting Inflammation and Nutrition Determinant of
     Anemia (BRINDA) Adjustment Method
 Version: 0.1.1
-Author@R: 
-    c(person(given  = "Hanqi", 
-             Family = "Luo", 
-             email  = "LUOHANQI@gmail.com", 
-             role   = c("cre", "aut"),
-             Comment = c(ORCID = "0000-0001-6253-5818")), 
-      person(given  = "O Yaw", 
-             Family = "Addo", 
-             email  = "lyu6@cdc.gov", 
-             role.  = "aut"), 
-      person(given = "Afrin", 
-             Family = "Jahan", 
-             email = "afrin.jahan@emory.edu",
-             role = "ctb"))
 Author: Hanqi Luo [aut, cre],
         O Yaw Addo [aut],
         Afrin Jahan [ctb]
