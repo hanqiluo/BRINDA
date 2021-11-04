@@ -1,6 +1,6 @@
-
 #' @name BRINDA
-#' @title BRINDA
+#' @title Biomarker Reflecting Inflammation and Nutrition Determinant of Anemia
+#' (BRINDA) Adjustment Method
 #' @author Hanqi Luo, O.Yaw Addo, Afrin Jahan
 #'
 #' @description The BRINDA R package is a user-friendly all-in-one R package
@@ -11,8 +11,9 @@
 #'
 #' @param retinol_binding_protein_varname Enter the variable name of retinol
 #' binding protein (if available) in your dataset. The variable can be in either
-#' international or conventional units. The adjusted values in the output dataset
-#' will be in the same unit as retinol binding protein variable in the input dataset.
+#' international or conventional units. The adjusted values in the output
+#' dataset will be in the same unit as retinol binding protein variable in the
+#' input dataset.
 #'
 #' @param retinol_varname Enter the variable name of serum/plasma retinol
 #' (if available) in your dataset. The variable can be in either international
@@ -43,10 +44,10 @@
 #'
 #' @param population_group Please write WRA, PSC, Other, or Manual. The BRINDA R
 #' package can only analyze one population group at one time.
-#'	If users select WRA or PSC, external CRP/AGP references values will be used
-#'	If users select Other, the lowest decile of the CRP and AGP will be calculated
-#'	and used as CRP and AGP reference values
-#'	If users select Manual as the population group, users can select their own
+#'	If users select WRA or PSC, external CRP/AGP reference values will be used
+#'	If users select Other, the lowest decile of the CRP and AGP will be
+#'	calculated and used as CRP and AGP reference values
+#'	If users select Manual as the population group, users can define their own
 #'	AGP and CRP reference values for the BRINDA adjustment.
 #'
 #' @param crp_ref_value_manual Leave it empty if users select population_group
@@ -55,26 +56,25 @@
 #' reference value
 #'
 #' @param agp_ref_value_manual Leave it empty if users select population_group
-#' as WRA, PSC, or Other If users select population_group as Manual, and there is
-#' an AGP variable in the dataset, enter a user specified AGP reference value
+#' as WRA, PSC, or Other If users select population_group as Manual, and there
+#' is an AGP variable in the dataset, enter a user specified AGP reference value
 #'
 #' @param output_format Please write FULL or SIMPLE (SIMPLE by default if users
 #' leave it empty). The SIMPLE output only provides users adjusted micronutrient
-#' biomarker values. The FULL output provides users all the intermediate parameters
-#' for the BRINDA adjustment, such as coefficients of log (AGP) and log (CRP) and
-#' associated standard errors and P values, in addition to adjusted micronutrient
-#' biomarker values.
+#' biomarker values. The FULL output provides users all the intermediate
+#' parameters for the BRINDA adjustment, such as coefficients of log (AGP) and
+#' log (CRP) and associated standard errors and P values, in addition to adjusted
+#' micronutrient biomarker values.
 #'
-#' @return `brinda()` returns a data frame object that contains additional variables of
-#' adjusted micronutrient biomarkers (by default). If users specify output
-#' format = full, the output dataset will also include additional variables such
-#' as coefficients of regressions of micronutrient biomarkers on AGP and CRP,
-#' natural logs of AGP/CRP reference values.
+#' @return `brinda()` returns a data frame object that contains additional
+#' variables of adjusted micronutrient biomarkers (by default). If users specify
+#' output format = full, the output dataset will also include additional
+#' variables such as coefficients of regressions of micronutrient biomarkers on
+#' AGP and CRP, natural logs of AGP/CRP reference values.
 #'
 #' @examples
 #' data(sample_data)
-#' final_data_psc <-
-#' BRINDA(dataset = sample_data,
+#' sample_data_adj <- BRINDA(dataset = sample_data,
 #'        retinol_binding_protein_varname = rbp,
 #'        retinol_varname = sr, ferritin_varname = sf,
 #'        soluble_transferrin_receptor_varname = stfr,
@@ -82,7 +82,7 @@
 #'        agp_varname = agp, population = Psc,
 #'        crp_ref_value_manual = ,
 #'        agp_ref_value_manual = ,
-#'        output_format = full)
+#'        output_format = )
 #' @export BRINDA
 #' @importFrom data.table "setnames"
 #' @importFrom Hmisc "upData"
@@ -90,7 +90,7 @@
 #' @importFrom dplyr "%>%" "select" "mutate" "all_of"
 #' @import stats
 #' @importFrom rlang "quo_name" "enquo"
-#' @importFrom utils "globalVariables"
+#' @importFrom rlang ".data"
 
 
 #
@@ -108,7 +108,7 @@ BRINDA <- function(
     population_group,
     crp_ref_value_manual = NULL,
     agp_ref_value_manual = NULL,
-    output_format = SIMPLE
+    output_format
 ){
 
     # dataset: the name of the dataset
@@ -120,8 +120,10 @@ BRINDA <- function(
     # crp:  variable name of CRP (unit must be mg/L)
     # agp:  variable name of AGP (unit must be g/L)
     # population_group: Can be "WRA", "PSC", "Other", or "Manual"
-    # crp_ref_value_manual: User specified CRP reference value if the population_group is Manual
-    # agp_ref_value_manual: User specified AGP reference value if the population_group is Manual
+    # crp_ref_value_manual: User specified CRP reference value if the
+    # population_group is Manual
+    # agp_ref_value_manual: User specified AGP reference value if the
+    # population_group is Manual
     # output: can be "full" or "simple"
 
     #
@@ -132,7 +134,8 @@ BRINDA <- function(
     # check if the main dataset exists
     #
 
-    dataset_name <- ifelse(quo_name(enquo(dataset)) == "", NA, quo_name(enquo(dataset)))
+    dataset_name <- ifelse(quo_name(enquo(dataset)) == "", NA,
+                           quo_name(enquo(dataset)))
 
     if(is.na(dataset_name)){
         stop("-------------------------------------------
@@ -504,23 +507,23 @@ zinc_spearman_corr <- function(dataset, zn_quo, crp_quo, agp_quo, population_quo
 brinda_decile <- function(dataset, population_quo, crp_ref_value_manual,
                           agp_ref_value_manual, agp_quo, crp_quo) {
     if(population_quo == "WRA"){
-        log_crp_ref <<- -1.83
-        log_agp_ref <<- -0.63
+        log_crp_ref <- -1.83
+        log_agp_ref <- -0.63
     }
 
     if(population_quo == "PSC"){
-        log_crp_ref <<- -2.26
-        log_agp_ref <<- -0.52
+        log_crp_ref <- -2.26
+        log_agp_ref <- -0.52
     }
 
     if(population_quo == "OTHER"){
-        log_crp_ref <<- ifelse(exists("crp", dataset), log(quantile(dataset$crp, 0.1, na.rm = T)), NA)
-        log_agp_ref <<- ifelse(exists("agp", dataset), log(quantile(dataset$agp, 0.1, na.rm = T)), NA)
+        log_crp_ref <- ifelse(exists("crp", dataset), log(quantile(dataset$crp, 0.1, na.rm = T)), NA)
+        log_agp_ref <- ifelse(exists("agp", dataset), log(quantile(dataset$agp, 0.1, na.rm = T)), NA)
     }
 
     if(population_quo == "MANUAL"){
-        log_crp_ref <<- ifelse(is.null(crp_ref_value_manual), NA, log(crp_ref_value_manual))
-        log_agp_ref <<- ifelse(is.null(agp_ref_value_manual), NA, log(agp_ref_value_manual))
+        log_crp_ref <- ifelse(is.null(crp_ref_value_manual), NA, log(crp_ref_value_manual))
+        log_agp_ref <- ifelse(is.null(agp_ref_value_manual), NA, log(agp_ref_value_manual))
     }
 
     # save the variable in the new dataset
@@ -575,7 +578,7 @@ brinda_adjustment_agp_crp <- function(dataset, mn_biomarker_full_name, biomarker
         beta2_P_value <- 0
     }
     dataset <- dataset %>%
-        mutate(biomarker_adj = exp(log_biomarker - beta1 * log_agp_diff - beta2 * log_crp_diff),
+        mutate(biomarker_adj = exp(.data$log_biomarker - beta1 * .data$log_agp_diff - beta2 * .data$log_crp_diff),
                beta1 = beta1,
                beta1_se = beta1_se,
                beta1_P_value = beta1_P_value,
@@ -625,7 +628,7 @@ brinda_adjustment_agp <- function(dataset, mn_biomarker_full_name, biomarker){
         beta1_P_value <- 0
     }
     dataset <- dataset %>%
-        mutate(biomarker_adj = exp(log_biomarker - beta1 * log_agp_diff),
+        mutate(biomarker_adj = exp(.data$log_biomarker - beta1 * .data$log_agp_diff),
                beta1 = beta1,
                beta1_se = beta1_se,
                beta1_P_value = beta1_P_value)
@@ -665,7 +668,7 @@ brinda_adjustment_crp <- function(dataset, mn_biomarker_full_name, biomarker){
         beta2_P_value <- 0
     }
     dataset <- dataset %>%
-        mutate(biomarker_adj = exp(log_biomarker  - beta2 * log_crp_diff),
+        mutate(biomarker_adj = exp(.data$log_biomarker  - beta2 * .data$log_crp_diff),
                beta2 = beta2,
                beta2_se = beta2_se,
                beta2_P_value = beta2_P_value)
@@ -702,8 +705,8 @@ brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo
         dataset <-
             dataset %>%
             mutate(
-                log_agp      = log(ifelse(agp == 0, agp + 0.001, agp)),
-                log_agp_diff = pmax(log_agp - log_agp_ref, 0))
+                log_agp      = log(ifelse(.data$agp == 0, .data$agp + 0.001, .data$agp)),
+                log_agp_diff = pmax(.data$log_agp - .data$log_agp_ref, 0))
 
         # AGP/CRP labels
         var.labels <- c(log_agp = "BRINDA output variable: natural log of the AGP",
@@ -716,8 +719,8 @@ brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo
         dataset <-
             dataset %>%
             mutate(
-                log_crp      = log(ifelse(crp == 0, crp + 0.001, crp)),
-                log_crp_diff = pmax(log_crp - log_crp_ref, 0))
+                log_crp      = log(ifelse(.data$crp == 0, .data$crp + 0.001, .data$crp)),
+                log_crp_diff = pmax(.data$log_crp - .data$log_crp_ref, 0))
 
         # AGP/CRP labels
         var.labels <- c(log_crp = "BRINDA output variable: natural log of the CRP",
@@ -739,7 +742,7 @@ brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo
 
         dataset <-
             dataset %>%
-            mutate(log_biomarker = log(ifelse(biomarker == 0, biomarker + 0.001, biomarker)))
+            mutate(log_biomarker = log(ifelse(.data$biomarker == 0, .data$biomarker + 0.001, .data$biomarker)))
 
         mn_biomarker_full_name <- mn_biomarker_full_variable_name_list[which(mn_biomarker_variable_name_list  == biomarker)]
 
@@ -832,7 +835,7 @@ brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo
             print("BRINDA does not adjust Serum Zinc among women of reproductive age")
             print("Adjusted zinc values are equal to unadjusted zinc values")
             print("--------------------------------------------")
-            dataset$biomarker_adj = dataset$biomarker
+            dataset$biomarker_adj <- dataset$biomarker
 
             var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
             dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
@@ -909,9 +912,9 @@ brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo
             }
         } # finish zinc
 
-        dataset <-
-            dataset %>%
-            dplyr::select(-biomarker, -log_biomarker)
+        dataset$biomarker <- NULL
+        dataset$log_biomarker <- NULL
+
     }
     return(dataset)
 }

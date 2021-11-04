@@ -21,18 +21,16 @@ An object of class \code{"data.frame"}
 data(sample_data)
 }
 \description{
-Small,toy biomarker data set that was subset from a cross-sectional survey in Malawi
-It provides artificial information for serum ferritin, soluble transferrin receptor,
-retinol binding protein, retinol, zinc, C-reactive protein, Alpha1-acid glycoprotein to
-illustrate the use of the package.
-}
-\examples{
-
-data(sample_data)
-head(sample_data)
-
+A biomarker data set that was subset from a cross-sectional survey in
+Malawi. It provides de-identified information for serum ferritin, soluble
+transferrin receptor, retinol binding protein, retinol, zinc, C-reactive
+protein (CRP), Alpha1-acid glycoprotein (AGP) to illustrate the use of the
+package.
 }
 \references{
-This data set was subset from the National Micronutrient Survey in Malawi (2016) for the BRINDA package.
+National Statistical Office (NSO), Community Health Sciences Unit
+ (CHSU) [Malawi], Centers for Disease Control and Prevention (CDC), and Emory
+ University. 2017. Malawi Micronutrient Survey 2015-16. Atlanta, GA, USA:
+ NSO, CHSU, CDC, and Emory University
 }
 \keyword{datasets}

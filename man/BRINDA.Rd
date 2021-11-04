@@ -2,7 +2,8 @@
 % Please edit documentation in R/BRINDA.R
 \name{BRINDA}
 \alias{BRINDA}
-\title{BRINDA}
+\title{Biomarker Reflecting Inflammation and Nutrition Determinant of Anemia
+(BRINDA) Adjustment Method}
 \usage{
 BRINDA(
   dataset,
@@ -16,7 +17,7 @@ BRINDA(
   population_group,
   crp_ref_value_manual = NULL,
   agp_ref_value_manual = NULL,
-  output_format = SIMPLE
+  output_format
 )
 }
 \arguments{
@@ -25,8 +26,9 @@ R environment; micronutrient biomarkers should NOT be log-transformed).}
 
 \item{retinol_binding_protein_varname}{Enter the variable name of retinol
 binding protein (if available) in your dataset. The variable can be in either
-international or conventional units. The adjusted values in the output dataset
-will be in the same unit as retinol binding protein variable in the input dataset.}
+international or conventional units. The adjusted values in the output
+dataset will be in the same unit as retinol binding protein variable in the
+input dataset.}
 
 \item{retinol_varname}{Enter the variable name of serum/plasma retinol
 (if available) in your dataset. The variable can be in either international
@@ -57,10 +59,10 @@ dataset (unit must be g/L)}
 
 \item{population_group}{Please write WRA, PSC, Other, or Manual. The BRINDA R
 package can only analyze one population group at one time.
-If users select WRA or PSC, external CRP/AGP references values will be used
-If users select Other, the lowest decile of the CRP and AGP will be calculated
-and used as CRP and AGP reference values
-If users select Manual as the population group, users can select their own
+If users select WRA or PSC, external CRP/AGP reference values will be used
+If users select Other, the lowest decile of the CRP and AGP will be
+calculated and used as CRP and AGP reference values
+If users select Manual as the population group, users can define their own
 AGP and CRP reference values for the BRINDA adjustment.}
 
 \item{crp_ref_value_manual}{Leave it empty if users select population_group
@@ -69,22 +71,22 @@ and there is a CRP variable in the dataset, enter a user-specified CRP
 reference value}
 
 \item{agp_ref_value_manual}{Leave it empty if users select population_group
-as WRA, PSC, or Other If users select population_group as Manual, and there is
-an AGP variable in the dataset, enter a user specified AGP reference value}
+as WRA, PSC, or Other If users select population_group as Manual, and there
+is an AGP variable in the dataset, enter a user specified AGP reference value}
 
 \item{output_format}{Please write FULL or SIMPLE (SIMPLE by default if users
 leave it empty). The SIMPLE output only provides users adjusted micronutrient
-biomarker values. The FULL output provides users all the intermediate parameters
-for the BRINDA adjustment, such as coefficients of log (AGP) and log (CRP) and
-associated standard errors and P values, in addition to adjusted micronutrient
-biomarker values.}
+biomarker values. The FULL output provides users all the intermediate
+parameters for the BRINDA adjustment, such as coefficients of log (AGP) and
+log (CRP) and associated standard errors and P values, in addition to adjusted
+micronutrient biomarker values.}
 }
 \value{
-`brinda()` returns a data frame object that contains additional variables of
-adjusted micronutrient biomarkers (by default). If users specify output
-format = full, the output dataset will also include additional variables such
-as coefficients of regressions of micronutrient biomarkers on AGP and CRP,
-natural logs of AGP/CRP reference values.
+`brinda()` returns a data frame object that contains additional
+variables of adjusted micronutrient biomarkers (by default). If users specify
+output format = full, the output dataset will also include additional
+variables such as coefficients of regressions of micronutrient biomarkers on
+AGP and CRP, natural logs of AGP/CRP reference values.
 }
 \description{
 The BRINDA R package is a user-friendly all-in-one R package
@@ -92,8 +94,7 @@ that uses a series of functions to implement BRINDA adjustment method.
 }
 \examples{
 data(sample_data)
-final_data_psc <-
-BRINDA(dataset = sample_data,
+sample_data_adj <- BRINDA(dataset = sample_data,
        retinol_binding_protein_varname = rbp,
        retinol_varname = sr, ferritin_varname = sf,
        soluble_transferrin_receptor_varname = stfr,
@@ -101,7 +102,7 @@ BRINDA(dataset = sample_data,
        agp_varname = agp, population = Psc,
        crp_ref_value_manual = ,
        agp_ref_value_manual = ,
-       output_format = full)
+       output_format = )
 }
 \author{
 Hanqi Luo, O.Yaw Addo, Afrin Jahan

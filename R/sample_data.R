@@ -1,9 +1,10 @@
 #' Micronutrient biomarker dataset
 #'
-#' Small,toy biomarker data set that was subset from a cross-sectional survey in Malawi
-#' It provides artificial information for serum ferritin, soluble transferrin receptor,
-#' retinol binding protein, retinol, zinc, C-reactive protein, Alpha1-acid glycoprotein to
-#' illustrate the use of the package.
+#' A biomarker data set that was subset from a cross-sectional survey in
+#' Malawi. It provides de-identified information for serum ferritin, soluble
+#' transferrin receptor, retinol binding protein, retinol, zinc, C-reactive
+#' protein (CRP), Alpha1-acid glycoprotein (AGP) to illustrate the use of the
+#' package.
 #'
 #' @docType data
 #'
@@ -20,11 +21,9 @@
 #'  \item{crp}{C-reactive Protein, mg/L}
 #'  \item{agp}{Alpha1-acid glycoprotein, g/L}
 #' }
-#' @references This data set was subset from the National Micronutrient Survey in Malawi (2016) for the BRINDA package.
+#' @references National Statistical Office (NSO), Community Health Sciences Unit
+#'  (CHSU) [Malawi], Centers for Disease Control and Prevention (CDC), and Emory
+#'  University. 2017. Malawi Micronutrient Survey 2015-16. Atlanta, GA, USA:
+#'  NSO, CHSU, CDC, and Emory University
 #' @keywords datasets
-#' @examples
-#'
-#' data(sample_data)
-#' head(sample_data)
-#'
 "sample_data"
