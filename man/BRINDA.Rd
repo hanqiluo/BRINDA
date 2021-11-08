@@ -2,8 +2,7 @@
 % Please edit documentation in R/BRINDA.R
 \name{BRINDA}
 \alias{BRINDA}
-\title{Biomarker Reflecting Inflammation and Nutrition Determinant of Anemia
-(BRINDA) Adjustment Method}
+\title{Computation of BRINDA Adjusted Micronutrient Biomarkers for inflammation}
 \usage{
 BRINDA(
   dataset,
@@ -89,20 +88,88 @@ variables such as coefficients of regressions of micronutrient biomarkers on
 AGP and CRP, natural logs of AGP/CRP reference values.
 }
 \description{
-The BRINDA R package is a user-friendly all-in-one R package
-that uses a series of functions to implement BRINDA adjustment method.
+Inflammation can affect many micronutrient biomarkers and can thus lead to incorrect diagnosis of individuals and to over- or under-estimate the prevalence of deficiency in a population. Biomarkers Reflecting Inflammation and Nutritional Determinants of Anemia (BRINDA) is a multi-agency and multi-country partnership designed to improve the interpretation of nutrient biomarkers in settings of inflammation and to generate context-specific estimates of risk factors for anemia, according to Suchdev (2016) <doi.org/10.1093/ajcn/nqz303>. In the past few years, BRINDA published a series of papers to provide guidance on how to adjust micronutrient biomarkers, retinol binding protein, serum retinol, serum ferritin by Namaste (2020), soluble transferrin receptor (sTfR), serum zinc, serum and Red Blood Cell (RBC) folate, and serum B-12, using inflammation markers, alpha-1-acid glycoprotein (AGP) and/or C-Reactive Protein (CRP) by Namaste (2020) <doi.org/10.1093/ajcn/nqaa141>, Rohner (2017) <doi.org/10.3945/ajcn.116.142232>, McDonald (2020) <doi.org/10.1093/ajcn/nqz304>, and Young (2020) <doi.org/10.1093/ajcn/nqz303>. The BRINDA inflammation adjustment method mainly focuses on Women of Reproductive Age (WRA) and Preschool-age Children (PSC); however, the general principle of the BRINDA method might apply to other population groups.
+
+The BRINDA R package is a user-friendly all-in-one R package that uses a series of functions to implement BRINDA adjustment method, as described above. The BRINDA R package will first carry out rigorous checks and provides users guidance to correct data or input errors (if they occur) prior to inflammation adjustments. After no errors are detected, the package implements the BRINDA inflammation adjustment for up to five micronutrient biomarkers, namely retinol-binding-protein, serum retinol, serum ferritin, sTfR, and serum zinc (when appropriate), using inflammation indicators of AGP and/or CRP for various population groups. Of note, adjustment for serum and RBC folate and serum B-12 is not included in the R package, since evidence shows that no adjustment is needed for these micronutrient biomarkers in either WRA or PSC groups, according to Young (2020) <doi.org/10.1093/ajcn/nqz303>.
+
+The BRINDA adjustment method uses external AGP and CRP reference values (which are indicative of apparently healthy status) to calibrate micronutrient biomarkers for WRA and PSC. For other population groups, it is recommended to first check the relationship between micronutrient and inflammation markers, and if the relationship exists, perform inflammation adjustment based on the internal deciles of AGP and/or CRP. The BRINDA R package follows the published BRINDA method to perform inflammation adjustment in WRA and PSC groups and has an additional functionality that allows users to 1) perform inflammation adjustment using population specific internal lowest decile, or 2) input their own numeric AGP and CRP reference values.
 }
 \examples{
 data(sample_data)
-sample_data_adj <- BRINDA(dataset = sample_data,
+
+# Example 1
+# calculate BRINDA inflammation adjustment values for preschool-age children
+# (Assuming the data set contains information of preschool-age children)
+
+sample_data_adj <-
+    BRINDA(dataset = sample_data,
        retinol_binding_protein_varname = rbp,
-       retinol_varname = sr, ferritin_varname = sf,
+       retinol_varname = sr,
+       ferritin_varname = sf,
        soluble_transferrin_receptor_varname = stfr,
-       zinc_varname = zinc, crp_varname = crp,
-       agp_varname = agp, population = Psc,
+       zinc_varname = zinc,
+       crp_varname = crp,
+       agp_varname = agp,
+       population = Psc,
        crp_ref_value_manual = ,
        agp_ref_value_manual = ,
        output_format = )
+
+# Example 2
+# Calculate BRINDA inflammation adjustment values for non-pregnant women of
+# reproductive age assuming the sample data set contains information of women
+# of reproductive age).
+
+sample_data_adj2 <-
+    BRINDA(dataset = sample_data,
+       retinol_binding_protein_varname = rbp,
+       retinol_varname = sr,
+       ferritin_varname = sf,
+       soluble_transferrin_receptor_varname = stfr,
+       zinc_varname = zinc,
+       crp_varname = ,
+       agp_varname = agp, population = WRA,
+       crp_ref_value_manual = ,
+       agp_ref_value_manual = ,
+       output_format = )
+
+# Example 3
+# Calculate BRINDA inflammation adjustment values for other population assuming
+# the study population is neither women of reproductive age nor preschool-age
+# children
+
+sample_data_adj3 <-
+    BRINDA(dataset = sample_data,
+       retinol_binding_protein_varname = rbp,
+       retinol_varname = sr,
+       ferritin_varname = sf,
+       soluble_transferrin_receptor_varname = stfr,
+       zinc_varname = zinc,
+       crp_varname = crp,
+       agp_varname = ,
+       population = OTHER,
+       crp_ref_value_manual = ,
+       agp_ref_value_manual = ,
+       output_format = FULL)
+
+# Example 4
+# calculate BRINDA inflammation adjustment values for a population when users
+# would like to apply user-defined CRP and AGP reference values
+
+sample_data_adj4 <-
+    BRINDA(dataset = sample_data,
+       retinol_binding_protein_varname = rbp,
+       retinol_varname = sr,
+       ferritin_varname = sf,
+       soluble_transferrin_receptor_varname = stfr,
+       zinc_varname = zinc,
+       crp_varname = crp,
+       agp_varname = agp,
+       population = MANUAL,
+       crp_ref_value_manual = 0.2,
+       agp_ref_value_manual = 1.4,
+       output_format = FULL)
+
 }
 \author{
 Hanqi Luo, O.Yaw Addo, Afrin Jahan

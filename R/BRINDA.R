@@ -1,10 +1,12 @@
 #' @name BRINDA
-#' @title Biomarker Reflecting Inflammation and Nutrition Determinant of Anemia
-#' (BRINDA) Adjustment Method
+#' @title Computation of BRINDA Adjusted Micronutrient Biomarkers for inflammation
 #' @author Hanqi Luo, O.Yaw Addo, Afrin Jahan
 #'
-#' @description The BRINDA R package is a user-friendly all-in-one R package
-#' that uses a series of functions to implement BRINDA adjustment method.
+#' @description Inflammation can affect many micronutrient biomarkers and can thus lead to incorrect diagnosis of individuals and to over- or under-estimate the prevalence of deficiency in a population. Biomarkers Reflecting Inflammation and Nutritional Determinants of Anemia (BRINDA) is a multi-agency and multi-country partnership designed to improve the interpretation of nutrient biomarkers in settings of inflammation and to generate context-specific estimates of risk factors for anemia, according to Suchdev (2016) <doi.org/10.1093/ajcn/nqz303>. In the past few years, BRINDA published a series of papers to provide guidance on how to adjust micronutrient biomarkers, retinol binding protein, serum retinol, serum ferritin by Namaste (2020), soluble transferrin receptor (sTfR), serum zinc, serum and Red Blood Cell (RBC) folate, and serum B-12, using inflammation markers, alpha-1-acid glycoprotein (AGP) and/or C-Reactive Protein (CRP) by Namaste (2020) <doi.org/10.1093/ajcn/nqaa141>, Rohner (2017) <doi.org/10.3945/ajcn.116.142232>, McDonald (2020) <doi.org/10.1093/ajcn/nqz304>, and Young (2020) <doi.org/10.1093/ajcn/nqz303>. The BRINDA inflammation adjustment method mainly focuses on Women of Reproductive Age (WRA) and Preschool-age Children (PSC); however, the general principle of the BRINDA method might apply to other population groups.
+#'
+#' The BRINDA R package is a user-friendly all-in-one R package that uses a series of functions to implement BRINDA adjustment method, as described above. The BRINDA R package will first carry out rigorous checks and provides users guidance to correct data or input errors (if they occur) prior to inflammation adjustments. After no errors are detected, the package implements the BRINDA inflammation adjustment for up to five micronutrient biomarkers, namely retinol-binding-protein, serum retinol, serum ferritin, sTfR, and serum zinc (when appropriate), using inflammation indicators of AGP and/or CRP for various population groups. Of note, adjustment for serum and RBC folate and serum B-12 is not included in the R package, since evidence shows that no adjustment is needed for these micronutrient biomarkers in either WRA or PSC groups, according to Young (2020) <doi.org/10.1093/ajcn/nqz303>.
+#'
+#' The BRINDA adjustment method uses external AGP and CRP reference values (which are indicative of apparently healthy status) to calibrate micronutrient biomarkers for WRA and PSC. For other population groups, it is recommended to first check the relationship between micronutrient and inflammation markers, and if the relationship exists, perform inflammation adjustment based on the internal deciles of AGP and/or CRP. The BRINDA R package follows the published BRINDA method to perform inflammation adjustment in WRA and PSC groups and has an additional functionality that allows users to 1) perform inflammation adjustment using population specific internal lowest decile, or 2) input their own numeric AGP and CRP reference values.
 #'
 #' @param dataset Enter the name of the dataset (should be already loaded in the
 #' R environment; micronutrient biomarkers should NOT be log-transformed).
@@ -74,15 +76,80 @@
 #'
 #' @examples
 #' data(sample_data)
-#' sample_data_adj <- BRINDA(dataset = sample_data,
+#'
+#' # Example 1
+#' # calculate BRINDA inflammation adjustment values for preschool-age children
+#' # (Assuming the data set contains information of preschool-age children)
+#'
+#' sample_data_adj <-
+#'     BRINDA(dataset = sample_data,
 #'        retinol_binding_protein_varname = rbp,
-#'        retinol_varname = sr, ferritin_varname = sf,
+#'        retinol_varname = sr,
+#'        ferritin_varname = sf,
 #'        soluble_transferrin_receptor_varname = stfr,
-#'        zinc_varname = zinc, crp_varname = crp,
-#'        agp_varname = agp, population = Psc,
+#'        zinc_varname = zinc,
+#'        crp_varname = crp,
+#'        agp_varname = agp,
+#'        population = Psc,
 #'        crp_ref_value_manual = ,
 #'        agp_ref_value_manual = ,
 #'        output_format = )
+#'
+#' # Example 2
+#' # Calculate BRINDA inflammation adjustment values for non-pregnant women of
+#' # reproductive age assuming the sample data set contains information of women
+#' # of reproductive age).
+#'
+#' sample_data_adj2 <-
+#'     BRINDA(dataset = sample_data,
+#'        retinol_binding_protein_varname = rbp,
+#'        retinol_varname = sr,
+#'        ferritin_varname = sf,
+#'        soluble_transferrin_receptor_varname = stfr,
+#'        zinc_varname = zinc,
+#'        crp_varname = ,
+#'        agp_varname = agp, population = WRA,
+#'        crp_ref_value_manual = ,
+#'        agp_ref_value_manual = ,
+#'        output_format = )
+#'
+#' # Example 3
+#' # Calculate BRINDA inflammation adjustment values for other population assuming
+#' # the study population is neither women of reproductive age nor preschool-age
+#' # children
+#'
+#' sample_data_adj3 <-
+#'     BRINDA(dataset = sample_data,
+#'        retinol_binding_protein_varname = rbp,
+#'        retinol_varname = sr,
+#'        ferritin_varname = sf,
+#'        soluble_transferrin_receptor_varname = stfr,
+#'        zinc_varname = zinc,
+#'        crp_varname = crp,
+#'        agp_varname = ,
+#'        population = OTHER,
+#'        crp_ref_value_manual = ,
+#'        agp_ref_value_manual = ,
+#'        output_format = FULL)
+#'
+#' # Example 4
+#' # calculate BRINDA inflammation adjustment values for a population when users
+#' # would like to apply user-defined CRP and AGP reference values
+#'
+#' sample_data_adj4 <-
+#'     BRINDA(dataset = sample_data,
+#'        retinol_binding_protein_varname = rbp,
+#'        retinol_varname = sr,
+#'        ferritin_varname = sf,
+#'        soluble_transferrin_receptor_varname = stfr,
+#'        zinc_varname = zinc,
+#'        crp_varname = crp,
+#'        agp_varname = agp,
+#'        population = MANUAL,
+#'        crp_ref_value_manual = 0.2,
+#'        agp_ref_value_manual = 1.4,
+#'        output_format = FULL)
+#'
 #' @export BRINDA
 #' @importFrom data.table "setnames"
 #' @importFrom Hmisc "upData"
@@ -193,10 +260,9 @@ BRINDA <- function(
                     agp_ref_value_manual = agp_ref_value_manual
     )
 
-    print("*******************************************")
-    print("Initial data checks completed")
-    print("*******************************************")
-    print("                                           ")
+    message("-------------------------------------------")
+    message("** Initial data checks completed **")
+    message("-------------------------------------------")
 
     display_summary(dataset_name = dataset_name,
                     dataset = dataset, rbp_quo = rbp_quo,
@@ -205,27 +271,23 @@ BRINDA <- function(
                     agp_quo = agp_quo, crp_quo = crp_quo,
                     population_quo = population_quo,
                     output_format_quo = output_format_quo)
-
-    print("                                           ")
-    print("*******************************************")
-    print("Proceed to the BRINDA adjustment")
-    print("*******************************************")
+    message("-------------------------------------------")
 
     #
     # BRINDA adjustment
     #
 
     # determine the reference values
+    message("** Generated deciles of AGP/CRP based on inputs **")
     biodata <- brinda_decile(dataset = biodata,
                              crp_ref_value_manual = crp_ref_value_manual,
                              agp_ref_value_manual = agp_ref_value_manual,
                              population_quo = population_quo,
                              agp_quo = agp_quo,
                              crp_quo = crp_quo)
+    message("-------------------------------------------")
 
-    print("*******************************************")
-    print("Generated deciles of AGP/CRP based on inputs")
-    print("*******************************************")
+    message("** Proceed to the BRINDA adjustment **")
 
     biodata <- brinda_adjustment (dataset = biodata,
                                   population_quo = population_quo,
@@ -237,10 +299,10 @@ BRINDA <- function(
                                   agp_quo = agp_quo,
                                   crp_quo = crp_quo)
 
-    print("*******************************************")
-    print("BRINDA adjustment completed")
-    print("Proceed to output dataset")
-    print("*******************************************")
+    message("** BRINDA adjustment completed **")
+    message("-------------------------------------------")
+
+    message("** Proceed to output dataset **")
 
     #
     # Output dataset:
@@ -255,10 +317,9 @@ BRINDA <- function(
                               zn_quo = zn_quo,
                               agp_quo = agp_quo,
                               crp_quo = crp_quo)
-
-    print("*******************************************")
-    print("BRINDA adjustment function complete")
-    print("*******************************************")
+    message("-------------------------------------------")
+    message("** BRINDA adjustment function complete **")
+    message("-------------------------------------------")
 
     return(biodata)
 }
@@ -312,7 +373,7 @@ biodata_gen <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo,
             if(!exists(biomarker_name, dataset)) {
                 stop(paste0(
                     "----------------------------------------------
-                    variable ", biomarker_name, " does not exist in the dataset
+                    variable ", biomarker_name, " does not  in the dataset
                     ----------------------------------------------"))
             }
 
@@ -440,60 +501,23 @@ display_summary <-
                                                   "Ferritin", "Soluble Transferrin Receptor", "Zinc",
                                                   "AGP", "CRP")
 
-        print("*******************************************")
-        print("** Overview of the dataset and BRINDA package inputs")
-        print(paste0("** Dataset Name: ", dataset_name))
+        message("** Overview of the dataset and BRINDA package inputs **")
+        message(paste0("**** Dataset Name: ", dataset_name, "**"))
 
         # biomarkers
         for(number in 1:length(quo_list)){
             if(is.na(quo_list[number])) {
-                print(paste0("** ",  mn_biomarker_full_variable_name_list[number], ": NA"))
+                message(paste0("**** ",  mn_biomarker_full_variable_name_list[number], ": NA"))
             } else {
-                print(paste0("** ",  mn_biomarker_full_variable_name_list[number], " Variable Name: ",
+                message(paste0("**** ",  mn_biomarker_full_variable_name_list[number], " Variable Name: ",
                              quo_list[number], " (n = ", sum(!is.na(dataset %>%
                                                                         dplyr::select(quo_list[number]))), ")"))
             }
         }
         # Population group and output format
-        print(paste0("** Population Group: ", population_quo))
-        print(paste0("** Output Format: ", output_format_quo))
-        print("*******************************************")
+        message(paste0("**** Population Group: ", population_quo))
+        message(paste0("**** Output Format: ", output_format_quo))
     }
-
-
-#
-# Produce Zinc statistics ------------------------------------------------------
-#
-zinc_spearman_corr <- function(dataset, zn_quo, crp_quo, agp_quo, population_quo) {
-    if(!is.na(zn_quo) & population_quo != "WRA"){
-        if(!is.na(agp_quo)){
-            spearman_agp_results <- cor.test(dataset$zn, dataset$agp, method=c("spearman"), exact=F)
-            dataset <-
-                dataset %>%
-                mutate(zn_agp_cor = spearman_agp_results$estimate,
-                       zn_agp_P_value = spearman_agp_results$p.value)
-
-            var.labels <- c(zn_agp_cor = "BRINDA output variable: Spearman correlation coefficient between serum zinc and AGP",
-                           zn_agp_P_value = "BRINDA output variable: P-value of Spearman correlation between serum zinc and AGP")
-
-            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-        }
-
-        if(!is.na(crp_quo)){
-            spearman_crp_results <- cor.test(dataset$zn, dataset$crp, method=c("spearman"), exact=F)
-            dataset <-
-                dataset %>%
-                mutate(zn_crp_cor = spearman_crp_results$estimate,
-                       zn_crp_P_value = spearman_crp_results$p.value)
-
-            var.labels <- c(zn_crp_cor = "BRINDA output variable: Spearman correlation coefficient between serum zinc and CRP",
-                           zn_crp_P_value = "BRINDA output variable: P-value of Spearman correlation between serum zinc and CRP")
-
-            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-        }
-    }
-    return(dataset)
-}
 
 #
 # BRINDA adjustment - finding decile--------------------------------------------
@@ -536,6 +560,8 @@ brinda_decile <- function(dataset, population_quo, crp_ref_value_manual,
             log_agp_ref   = "BRINDA output variable: natural log of the AGP reference value")
 
         dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+
+        message(paste0("**** log-AGP = ", round(unique(dataset$log_agp_ref), 2)))
     }
 
     if(!is.na(crp_quo)) {
@@ -546,18 +572,280 @@ brinda_decile <- function(dataset, population_quo, crp_ref_value_manual,
             log_crp_ref   = "BRINDA output variable: natural log of the CRP reference value")
 
         dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+
+        message(paste0("**** log-CRP = ", round(unique(dataset$log_crp_ref), 2)))
     }
+
+
+
 
     return(dataset)
 }
+
+
+
+#
+# BRINDA adjustment - core -----------------------------------------------------
+#
+brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo,
+                              agp_quo, crp_quo, population_quo) {
+
+
+    mn_biomarker_list <- c(rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo)
+    mn_biomarker_variable_name_list <- c("rbp", "sr", "sf", "stfr", "zn")[!is.na(mn_biomarker_list)]
+    mn_biomarker_full_variable_name_list <- c("Retinol Binding Protein", "Retinol",
+                                              "Ferritin", "Soluble Transferrin Receptor", "Zinc")[!is.na(mn_biomarker_list)]
+
+    # CRP/AGP values
+    if(exists("agp", dataset)){
+        dataset <-
+            dataset %>%
+            mutate(
+                log_agp      = log(ifelse(.data$agp == 0, .data$agp + 0.001, .data$agp)),
+                log_agp_diff = pmax(.data$log_agp - .data$log_agp_ref, 0))
+
+        # AGP/CRP labels
+        var.labels <- c(log_agp = "BRINDA output variable: natural log of the AGP",
+                        log_agp_diff = "BRINDA output variable: difference between natural log of the AGP and the AGP reference value")
+
+        dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+    }
+
+    if(exists("crp", dataset)){
+        dataset <-
+            dataset %>%
+            mutate(
+                log_crp      = log(ifelse(.data$crp == 0, .data$crp + 0.001, .data$crp)),
+                log_crp_diff = pmax(.data$log_crp - .data$log_crp_ref, 0))
+
+        # AGP/CRP labels
+        var.labels <- c(log_crp = "BRINDA output variable: natural log of the CRP",
+                        log_crp_diff = "BRINDA output variable: difference between natural log of the CRP and the CRP reference value")
+
+        dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+    }
+
+    # add zinc parameters if the CRP/AGP reference values
+    dataset <- zinc_spearman_corr(dataset = dataset,
+                                  zn_quo = zn_quo,
+                                  crp_quo = crp_quo,
+                                  agp_quo = agp_quo,
+                                  population_quo = population_quo)
+
+    for(biomarker in mn_biomarker_variable_name_list) {
+        #print(biomarker)
+        dataset$biomarker <- dataset[[biomarker]]
+
+        dataset <-
+            dataset %>%
+            mutate(log_biomarker = log(ifelse(.data$biomarker == 0, .data$biomarker + 0.001, .data$biomarker)))
+
+        mn_biomarker_full_name <- mn_biomarker_full_variable_name_list[which(mn_biomarker_variable_name_list  == biomarker)]
+
+        # sTfR and AGP
+        if(biomarker == "stfr" & exists("agp", dataset)){
+            dataset <- brinda_adjustment_agp(
+                dataset = dataset,
+                mn_biomarker_full_name = mn_biomarker_full_name,
+                biomarker = biomarker)
+        }
+
+        # sTfR and no AGP
+        if(biomarker == "stfr" & !exists("agp", dataset)){
+            dataset$biomarker_adj <- dataset$biomarker
+            message("**** Adjusted Soluble Transferrin Receptor values are equal to unadjusted Soluble Transferrin Receptor values")
+            message("****** BRINDA only uses AGP to adjust soluble transferrin receptor")
+            message("****** You did not provide information on AGP")
+
+
+            var.labels <- c(biomarker_adj = "BRINDA output variable: adjusted Soluble Transferrin Receptor")
+
+            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+            setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
+        }
+
+        # Non stfr/zn data
+        # Also exclude data with RBP, SR, ZN among WRA group
+        if(!(biomarker %in% c("rbp", "sr", "zn") & population_quo == "WRA")){
+            if(!(biomarker %in% c("stfr", "zn"))){
+                # Both AGP and CRP
+                if(exists("agp", dataset) & exists("crp", dataset)){
+                    dataset <- brinda_adjustment_agp_crp(
+                        dataset = dataset,
+                        mn_biomarker_full_name = mn_biomarker_full_name,
+                        biomarker = biomarker)
+                }
+
+                # Only AGP
+                if(exists("agp", dataset) & !exists("crp", dataset)){
+
+                    dataset <- brinda_adjustment_agp(
+                        dataset = dataset,
+                        mn_biomarker_full_name = mn_biomarker_full_name,
+                        biomarker = biomarker)
+                }
+
+                # Only CRP
+                if(!exists("agp", dataset) & exists("crp", dataset)){
+
+                    dataset <- brinda_adjustment_crp(
+                        dataset = dataset,
+                        mn_biomarker_full_name = mn_biomarker_full_name,
+                        biomarker = biomarker)
+                }
+            }
+            # no stfr/zn done
+        }
+
+        # Fix for serum_retinol/RBP/zinc for WRA - No BRINDA adjustment
+        if(population_quo == "WRA" & biomarker =="rbp"){
+            message("**** Adjusted Retinol Binding Protein values are equal to unadjusted Retinol Binding Protein values")
+            message("****** BRINDA does not adjust Retinol Binding Protein among women of reproductive age.")
+
+
+            dataset$biomarker_adj <- dataset$biomarker
+
+            var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
+            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+            setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
+
+        }
+
+        if(population_quo == "WRA" & biomarker =="sr"){
+            message("**** Adjusted retinol values are equal to unadjusted retinol values")
+            message("****** BRINDA does not adjust Serum Retinol among women of reproductive age")
+
+
+            dataset$biomarker_adj <- dataset$biomarker
+
+            var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
+            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+            setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
+        }
+
+        if(population_quo == "WRA" & biomarker =="zn"){
+            message("**** Adjusted zinc values are equal to unadjusted zinc values")
+            message("****** BRINDA does not adjust Serum Zinc among women of reproductive age")
+
+            dataset$biomarker_adj <- dataset$biomarker
+
+            var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
+            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+            setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
+        }
+
+        if(biomarker == "zn" & population_quo != "WRA"){
+            # when AGP and CRP are both available
+            if(exists("agp", dataset) & exists("crp", dataset)){
+                if((unique(dataset$zn_agp_cor) < -0.2 & unique(dataset$zn_agp_P_value) < 0.1) |
+                   (unique(dataset$zn_crp_cor) < -0.2 & unique(dataset$zn_crp_P_value) < 0.1)){
+                    dataset <- brinda_adjustment_agp_crp(
+                        dataset = dataset,
+                        mn_biomarker_full_name = mn_biomarker_full_name,
+                        biomarker = biomarker)
+                }else{
+                    message("**** Adjusted zinc values are equal to unadjusted zinc values")
+                    message("****** No or weak correlation between Serum Zinc and AGP based on Spearman correlation measures")
+                    message("****** No or weak correlation between Serum Zinc and CRP based on Spearman correlation measures")
+                    message("****** BRINDA does not adjust Serum Zinc because of no or weak correlation between Serum Zinc and AGP/CRP")
+
+                    dataset$biomarker_adj <- dataset$biomarker
+
+                    var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
+                    dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+                    setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
+                }
+            }
+
+            # when only AGP available
+            if(exists("agp", dataset) & !exists("crp", dataset)){
+                if((unique(dataset$zn_agp_cor) < -0.2 & unique(dataset$zn_agp_P_value) < 0.1)){
+                    dataset <- brinda_adjustment_agp_crp(
+                        dataset = dataset,
+                        mn_biomarker_full_name = mn_biomarker_full_name,
+                        biomarker = biomarker)
+                }else{
+                    message("**** Adjusted zinc values are equal to unadjusted zinc values")
+                    message("****** No or weak correlation between Serum Zinc and AGP based on Spearman correlation measures")
+                    message("****** BRINDA does not adjust Serum Zinc because of no or weak correlation between Serum Zinc and AGP")
+                    dataset$biomarker_adj <- dataset$biomarker
+
+                    var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
+                    dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+                    setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
+                }
+            }
+
+            # when only CRP
+            if(!exists("agp", dataset) & exists("crp", dataset)){
+                if((unique(dataset$zn_crp_cor) < -0.2 & unique(dataset$zn_crp_P_value) < 0.1)){
+                    dataset <- brinda_adjustment_crp(
+                        dataset = dataset,
+                        mn_biomarker_full_name = mn_biomarker_full_name,
+                        biomarker = biomarker)
+                }else{
+                    message("**** Adjusted zinc values are equal to unadjusted zinc values")
+                    message("****** No or weak correlation between Serum Zinc and CRP based on Spearman correlation measures")
+                    message("****** BRINDA does not adjust Serum Zinc because of no or weak correlation between Serum Zinc and CRP")
+
+                    dataset$biomarker_adj <- dataset$biomarker
+
+                    var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
+                    dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+                    setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
+                }
+            }
+        } # finish zinc
+
+        dataset$biomarker <- NULL
+        dataset$log_biomarker <- NULL
+
+    }
+    return(dataset)
+}
+
+
+
+#
+# Produce Zinc statistics ------------------------------------------------------
+#
+zinc_spearman_corr <- function(dataset, zn_quo, crp_quo, agp_quo, population_quo) {
+    if(!is.na(zn_quo) & population_quo != "WRA"){
+        if(!is.na(agp_quo)){
+            spearman_agp_results <- cor.test(dataset$zn, dataset$agp, method=c("spearman"), exact=F)
+            dataset <-
+                dataset %>%
+                mutate(zn_agp_cor = spearman_agp_results$estimate,
+                       zn_agp_P_value = spearman_agp_results$p.value)
+
+            var.labels <- c(zn_agp_cor = "BRINDA output variable: Spearman correlation coefficient between serum zinc and AGP",
+                            zn_agp_P_value = "BRINDA output variable: P-value of Spearman correlation between serum zinc and AGP")
+
+            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+        }
+
+        if(!is.na(crp_quo)){
+            spearman_crp_results <- cor.test(dataset$zn, dataset$crp, method=c("spearman"), exact=F)
+            dataset <-
+                dataset %>%
+                mutate(zn_crp_cor = spearman_crp_results$estimate,
+                       zn_crp_P_value = spearman_crp_results$p.value)
+
+            var.labels <- c(zn_crp_cor = "BRINDA output variable: Spearman correlation coefficient between serum zinc and CRP",
+                            zn_crp_P_value = "BRINDA output variable: P-value of Spearman correlation between serum zinc and CRP")
+
+            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
+        }
+    }
+    return(dataset)
+}
+
 
 #
 # Both AGP and CRP adjustment---------------------------------------------------
 #
 brinda_adjustment_agp_crp <- function(dataset, mn_biomarker_full_name, biomarker){
-    print("-------------------------------------------")
-    print(paste0("Adjusting ",  mn_biomarker_full_name, " using both AGP and CRP"))
-    print("-------------------------------------------")
+    message(paste0("**** Adjusting ",  mn_biomarker_full_name, " using both AGP and CRP"))
 
     if(!is.error(lm(log_biomarker ~ log_agp + log_crp, data = dataset, na.action=na.omit))){
         mysvyglm <- lm(log_biomarker ~ log_agp + log_crp, data = dataset, na.action=na.omit)
@@ -613,9 +901,7 @@ brinda_adjustment_agp_crp <- function(dataset, mn_biomarker_full_name, biomarker
 #
 brinda_adjustment_agp <- function(dataset, mn_biomarker_full_name, biomarker){
 
-    print("-------------------------------------------")
-    print(paste0("Adjusting ",  mn_biomarker_full_name, " using AGP only"))
-    print("--------------------------------------------")
+    message(paste0("**** Adjusting ",  mn_biomarker_full_name, " using AGP only"))
 
     if(!is.error(lm(log_biomarker ~ log_agp, data = dataset, na.action=na.omit))){
         mysvyglm <- lm(log_biomarker ~ log_agp, data = dataset, na.action=na.omit)
@@ -653,9 +939,7 @@ brinda_adjustment_agp <- function(dataset, mn_biomarker_full_name, biomarker){
 #
 brinda_adjustment_crp <- function(dataset, mn_biomarker_full_name, biomarker){
 
-    print("-------------------------------------------")
-    print(paste0("Adjusting ",  mn_biomarker_full_name, " using CRP only"))
-    print("-------------------------------------------")
+    message(paste0("**** Adjusting ",  mn_biomarker_full_name, " using CRP only"))
 
     if(!is.error(lm(log_biomarker ~ log_crp, data = dataset, na.action=na.omit))){
         mysvyglm <- lm(log_biomarker ~ log_crp, data = dataset, na.action=na.omit)
@@ -685,237 +969,6 @@ brinda_adjustment_crp <- function(dataset, mn_biomarker_full_name, biomarker){
     setnames(dataset, "beta2_P_value", paste0(biomarker, "_beta2_P_value"))
     setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
 
-    return(dataset)
-}
-
-#
-# BRINDA adjustment - core -----------------------------------------------------
-#
-brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo,
-                              agp_quo, crp_quo, population_quo) {
-
-
-    mn_biomarker_list <- c(rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo)
-    mn_biomarker_variable_name_list <- c("rbp", "sr", "sf", "stfr", "zn")[!is.na(mn_biomarker_list)]
-    mn_biomarker_full_variable_name_list <- c("Retinol Binding Protein", "Retinol",
-                                              "Ferritin", "Soluble Transferrin Receptor", "Zinc")[!is.na(mn_biomarker_list)]
-
-    # CRP/AGP values
-    if(exists("agp", dataset)){
-        dataset <-
-            dataset %>%
-            mutate(
-                log_agp      = log(ifelse(.data$agp == 0, .data$agp + 0.001, .data$agp)),
-                log_agp_diff = pmax(.data$log_agp - .data$log_agp_ref, 0))
-
-        # AGP/CRP labels
-        var.labels <- c(log_agp = "BRINDA output variable: natural log of the AGP",
-                       log_agp_diff = "BRINDA output variable: difference between natural log of the AGP and the AGP reference value")
-
-        dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-    }
-
-    if(exists("crp", dataset)){
-        dataset <-
-            dataset %>%
-            mutate(
-                log_crp      = log(ifelse(.data$crp == 0, .data$crp + 0.001, .data$crp)),
-                log_crp_diff = pmax(.data$log_crp - .data$log_crp_ref, 0))
-
-        # AGP/CRP labels
-        var.labels <- c(log_crp = "BRINDA output variable: natural log of the CRP",
-                       log_crp_diff = "BRINDA output variable: difference between natural log of the CRP and the CRP reference value")
-
-        dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-    }
-
-    # add zinc parameters if the CRP/AGP reference values
-    dataset <- zinc_spearman_corr(dataset = dataset,
-                                  zn_quo = zn_quo,
-                                  crp_quo = crp_quo,
-                                  agp_quo = agp_quo,
-                                  population_quo = population_quo)
-
-    for(biomarker in mn_biomarker_variable_name_list) {
-        #print(biomarker)
-        dataset$biomarker <- dataset[[biomarker]]
-
-        dataset <-
-            dataset %>%
-            mutate(log_biomarker = log(ifelse(.data$biomarker == 0, .data$biomarker + 0.001, .data$biomarker)))
-
-        mn_biomarker_full_name <- mn_biomarker_full_variable_name_list[which(mn_biomarker_variable_name_list  == biomarker)]
-
-        # sTfR and AGP
-        if(biomarker == "stfr" & !all(is.na(dataset$agp))){
-            dataset <- brinda_adjustment_agp(
-                dataset = dataset,
-                mn_biomarker_full_name = mn_biomarker_full_name,
-                biomarker = biomarker)
-        }
-
-        # sTfR and no AGP
-        if(biomarker == "stfr" & all(is.na(dataset$agp))){
-            dataset$biomarker_adj <- dataset$biomarker
-            print("-------------------------------------------")
-            print("BRINDA only uses AGP to adjust soluble transferrin receptor")
-            print("You did not provide information on AGP")
-            print("Adjusted Soluble Transferrin Receptor values are equal to unadjusted Soluble Transferrin Receptor values")
-            print("--------------------------------------------")
-
-            var.labels <- c(biomarker_adj = "BRINDA output variable: adjusted Soluble Transferrin Receptor")
-
-            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-            setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
-        }
-
-        # Non stfr/zn data
-        # Also exclude data with RBP, SR, ZN among WRA group
-        if(!(biomarker %in% c("rbp", "sr", "zn") & population_quo == "WRA")){
-            if(!(biomarker %in% c("stfr", "zn"))){
-                # Both AGP and CRP
-                if(!all(is.na(dataset$crp)) & !all(is.na(dataset$agp))){
-                    dataset <- brinda_adjustment_agp_crp(
-                        dataset = dataset,
-                        mn_biomarker_full_name = mn_biomarker_full_name,
-                        biomarker = biomarker)
-                }
-
-                # Only AGP
-                if(all(is.na(dataset$crp)) & !all(is.na(dataset$agp))){
-
-                    dataset <- brinda_adjustment_agp(
-                        dataset = dataset,
-                        mn_biomarker_full_name = mn_biomarker_full_name,
-                        biomarker = biomarker)
-                }
-
-                # Only CRP
-                if(!all(is.na(dataset$crp)) & all(is.na(dataset$agp))){
-
-                    dataset <- brinda_adjustment_crp(
-                        dataset = dataset,
-                        mn_biomarker_full_name = mn_biomarker_full_name,
-                        biomarker = biomarker)
-                }
-            }
-            # no stfr/zn done
-        }
-
-        # Fix for serum_retinol/RBP/zinc for WRA - No BRINDA adjustment
-        if(population_quo == "WRA" & biomarker =="rbp"){
-            print("-------------------------------------------")
-            print("BRINDA does not adjust Retinol Binding Protein among women of reproductive age.")
-            print("Adjusted Retinol Binding Protein values are equal to unadjusted Retinol Binding Protein values")
-            print("--------------------------------------------")
-
-            dataset$biomarker_adj <- dataset$biomarker
-
-            var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
-            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-            setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
-
-        }
-
-        if(population_quo == "WRA" & biomarker =="sr"){
-            print("-------------------------------------------")
-            print("BRINDA does not adjust Serum Retinol among women of reproductive age")
-            print("Adjusted retinol values are equal to unadjusted retinol values")
-            print("--------------------------------------------")
-
-            dataset$biomarker_adj <- dataset$biomarker
-
-            var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
-            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-            setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
-        }
-
-        if(population_quo == "WRA" & biomarker =="zn"){
-            print("-------------------------------------------")
-            print("BRINDA does not adjust Serum Zinc among women of reproductive age")
-            print("Adjusted zinc values are equal to unadjusted zinc values")
-            print("--------------------------------------------")
-            dataset$biomarker_adj <- dataset$biomarker
-
-            var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
-            dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-            setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
-        }
-
-        if(biomarker == "zn" & population_quo != "WRA"){
-            # when AGP and CRP are both available
-            if(!all(is.na(dataset$crp)) & !all(is.na(dataset$agp))){
-                if((unique(dataset$zn_agp_cor) < -0.2 & unique(dataset$zn_agp_P_value) < 0.1) |
-                   (unique(dataset$zn_crp_cor) < -0.2 & unique(dataset$zn_crp_P_value) < 0.1)){
-                    dataset <- brinda_adjustment_agp_crp(
-                        dataset = dataset,
-                        mn_biomarker_full_name = mn_biomarker_full_name,
-                        biomarker = biomarker)
-                }else{
-                    print("-------------------------------------------")
-                    print("Analyzing Serum Zinc")
-                    print("No or weak correlation between Serum Zinc and AGP based on Spearman correlation measures")
-                    print("No or weak correlation between Serum Zinc and CRP based on Spearman correlation measures")
-                    print("BRINDA does not adjust Serum Zinc because of no or weak correlation between Serum Zinc and AGP/CRP")
-                    print("Adjusted zinc values are equal to unadjusted zinc values")
-                    print("--------------------------------------------")
-                    dataset$biomarker_adj <- dataset$biomarker
-
-                    var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
-                    dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-                    setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
-                }
-            }
-
-            # when only AGP available
-            if(all(is.na(dataset$crp)) & !all(is.na(dataset$agp))){
-                if((unique(dataset$zn_agp_cor) < -0.2 & unique(dataset$zn_agp_P_value) < 0.1)){
-                    dataset <- brinda_adjustment_agp_crp(
-                        dataset = dataset,
-                        mn_biomarker_full_name = mn_biomarker_full_name,
-                        biomarker = biomarker)
-                }else{
-                    print("-------------------------------------------")
-                    print("Analyzing Serum Zinc")
-                    print("No or weak correlation between Serum Zinc and AGP based on Spearman correlation measures")
-                    print("BRINDA does not adjust Serum Zinc because of no or weak correlation between Serum Zinc and AGP")
-                    print("Adjusted zinc values are equal to unadjusted zinc values")
-                    print("--------------------------------------------")
-                    dataset$biomarker_adj <- dataset$biomarker
-
-                    var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
-                    dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-                    setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
-                }
-            }
-
-            # when only CRP
-            if(!all(is.na(dataset$crp)) & all(is.na(dataset$agp))){
-                if((unique(dataset$zn_crp_cor) < -0.2 & unique(dataset$zn_crp_P_value) < 0.1)){
-                    dataset <- brinda_adjustment_crp(
-                        dataset = dataset,
-                        mn_biomarker_full_name = mn_biomarker_full_name,
-                        biomarker = biomarker)
-                }else{
-                    print("-------------------------------------------")
-                    print("Analyzing Serum Zinc")
-                    print("No or weak correlation between Serum Zinc and CRP based on Spearman correlation measures")
-                    print("BRINDA does not adjust Serum Zinc because of no or weak correlation between Serum Zinc and CRP")
-                    print("Adjusted zinc values are equal to unadjusted zinc values")
-                    print("--------------------------------------------")
-                    dataset$biomarker_adj <- dataset$biomarker
-
-                    var.labels <- c(biomarker_adj = paste0("BRINDA output variable: adjusted ", mn_biomarker_full_name))
-                    dataset <- Hmisc::upData(dataset, labels = var.labels, print = F)
-                    setnames(dataset, "biomarker_adj", paste0(biomarker, "_adj"))
-                }
-            }
-        } # finish zinc
-
-        dataset$biomarker <- NULL
-        dataset$log_biomarker <- NULL
-
-    }
     return(dataset)
 }
 
@@ -949,9 +1002,7 @@ output_dataset <- function(output_format_quo, ori_dataset, brinda_dataset,
                                     brinda_dataset %>%
                                         dplyr::select(mn_biomarker_adj_variable_name_list))
         }
-        print("-------------------------------------------")
-        print(paste0("variables ", toString(mn_biomarker_adj_variable_name_list), " are generated by the BRINDA function"))
-        print("-------------------------------------------")
+        message(paste0("variables ", toString(mn_biomarker_adj_variable_name_list), " are generated by the BRINDA function"))
     }
 
     if(output_format_quo == "FULL"){
@@ -967,9 +1018,7 @@ output_dataset <- function(output_format_quo, ori_dataset, brinda_dataset,
                                         dplyr::select(all_of(mn_biomarker_full_name_list)))
         }
 
-        print("-------------------------------------------")
-        print(paste0("variables ", toString(mn_biomarker_full_name_list), " are generated by the BRINDA function"))
-        print("-------------------------------------------")
+        message(paste0("variables ", toString(mn_biomarker_full_name_list), " are generated by the BRINDA function"))
     }
     return(output_dataset)
 }

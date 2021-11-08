@@ -2,10 +2,22 @@ Type: Package
 Package: BRINDA
 Title: Biomarker Reflecting Inflammation and Nutrition Determinant of
     Anemia (BRINDA) Adjustment Method
-Version: 0.1.1
-Author: Hanqi Luo [aut, cre],
-        O Yaw Addo [aut],
-        Afrin Jahan [ctb]
+Version: 0.1.2
+Authors@R: 
+    c(person(given  = "Hanqi", 
+             family = "Luo", 
+             email  = "LUOHANQI@gmail.com", 
+             role   = c("cre", "aut"),
+             comment = c(ORCID = "0000-0001-6253-5818")), 
+      person(given  = "O Yaw", 
+             family = "Addo", 
+             email  = "lyu6@cdc.gov", 
+             role  = "aut",
+             comment = c(ORCID = "0000-0003-1269-759X")), 
+      person(given = "Afrin", 
+             family = "Jahan", 
+             email = "afrin.jahan@emory.edu",
+             role = "ctb"))
 Maintainer: Hanqi Luo <LUOHANQI@gmail.com>
 Description: The BRINDA R package is a user-friendly all-in-one R package
     that uses a series of functions to implement BRINDA adjustment method.
