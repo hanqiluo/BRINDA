@@ -10,3 +10,7 @@
 - Organize the notifications to make it flow better.
 - Change all(is.na(agp)) or all(is.na(crp)) to exists("agp", dataset), or 
 exists("crp", dataset)
+
+# BRINDA 0.1.3
+- Reduce the title to 65 characters
+- Add more description and DOI
