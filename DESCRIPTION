@@ -1,6 +1,6 @@
 Type: Package
 Package: BRINDA
-Title: Computation of BRINDA Adjusted Micronutrient Biomarkers for inflammation
+Title: Computation of BRINDA Adjusted Micronutrient Biomarkers for Inflammation
 Version: 0.1.2
 Authors@R: 
     c(person(given  = "Hanqi", 
