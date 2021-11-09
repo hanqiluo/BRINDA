@@ -1,7 +1,6 @@
 Type: Package
 Package: BRINDA
-Title: Biomarker Reflecting Inflammation and Nutrition Determinant of
-    Anemia (BRINDA) Adjustment Method
+Title: Computation of BRINDA Adjusted Micronutrient Biomarkers for inflammation
 Version: 0.1.2
 Authors@R: 
     c(person(given  = "Hanqi", 

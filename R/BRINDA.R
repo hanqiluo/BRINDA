@@ -2,7 +2,7 @@
 #' @title Computation of BRINDA Adjusted Micronutrient Biomarkers for inflammation
 #' @author Hanqi Luo, O.Yaw Addo, Afrin Jahan
 #'
-#' @description Inflammation can affect many micronutrient biomarkers and can thus lead to incorrect diagnosis of individuals and to over- or under-estimate the prevalence of deficiency in a population. Biomarkers Reflecting Inflammation and Nutritional Determinants of Anemia (BRINDA) is a multi-agency and multi-country partnership designed to improve the interpretation of nutrient biomarkers in settings of inflammation and to generate context-specific estimates of risk factors for anemia, according to Suchdev (2016) <doi.org/10.1093/ajcn/nqz303>. In the past few years, BRINDA published a series of papers to provide guidance on how to adjust micronutrient biomarkers, retinol binding protein, serum retinol, serum ferritin by Namaste (2020), soluble transferrin receptor (sTfR), serum zinc, serum and Red Blood Cell (RBC) folate, and serum B-12, using inflammation markers, alpha-1-acid glycoprotein (AGP) and/or C-Reactive Protein (CRP) by Namaste (2020) <doi.org/10.1093/ajcn/nqaa141>, Rohner (2017) <doi.org/10.3945/ajcn.116.142232>, McDonald (2020) <doi.org/10.1093/ajcn/nqz304>, and Young (2020) <doi.org/10.1093/ajcn/nqz303>. The BRINDA inflammation adjustment method mainly focuses on Women of Reproductive Age (WRA) and Preschool-age Children (PSC); however, the general principle of the BRINDA method might apply to other population groups.
+#' @description Inflammation can affect many micronutrient biomarkers and can thus lead to incorrect diagnosis of individuals and to over- or under-estimate the prevalence of deficiency in a population. Biomarkers Reflecting Inflammation and Nutritional Determinants of Anemia (BRINDA) is a multi-agency and multi-country partnership designed to improve the interpretation of nutrient biomarkers in settings of inflammation and to generate context-specific estimates of risk factors for anemia, according to Suchdev (2016) <doi.org/10.3945/an.115.010215>. In the past few years, BRINDA published a series of papers to provide guidance on how to adjust micronutrient biomarkers, retinol binding protein, serum retinol, serum ferritin by Namaste (2020), soluble transferrin receptor (sTfR), serum zinc, serum and Red Blood Cell (RBC) folate, and serum B-12, using inflammation markers, alpha-1-acid glycoprotein (AGP) and/or C-Reactive Protein (CRP) by Namaste (2020) <doi.org/10.1093/ajcn/nqaa141>, Rohner (2017) <doi.org/10.3945/ajcn.116.142232>, McDonald (2020) <doi.org/10.1093/ajcn/nqz304>, and Young (2020) <doi.org/10.1093/ajcn/nqz303>. The BRINDA inflammation adjustment method mainly focuses on Women of Reproductive Age (WRA) and Preschool-age Children (PSC); however, the general principle of the BRINDA method might apply to other population groups.
 #'
 #' The BRINDA R package is a user-friendly all-in-one R package that uses a series of functions to implement BRINDA adjustment method, as described above. The BRINDA R package will first carry out rigorous checks and provides users guidance to correct data or input errors (if they occur) prior to inflammation adjustments. After no errors are detected, the package implements the BRINDA inflammation adjustment for up to five micronutrient biomarkers, namely retinol-binding-protein, serum retinol, serum ferritin, sTfR, and serum zinc (when appropriate), using inflammation indicators of AGP and/or CRP for various population groups. Of note, adjustment for serum and RBC folate and serum B-12 is not included in the R package, since evidence shows that no adjustment is needed for these micronutrient biomarkers in either WRA or PSC groups, according to Young (2020) <doi.org/10.1093/ajcn/nqz303>.
 #'
@@ -78,7 +78,7 @@
 #' data(sample_data)
 #'
 #' # Example 1
-#' # calculate BRINDA inflammation adjustment values for preschool-age children
+#' # Calculate BRINDA inflammation adjustment values for preschool-age children
 #' # (Assuming the data set contains information of preschool-age children)
 #'
 #' sample_data_adj <-
@@ -133,7 +133,7 @@
 #'        output_format = FULL)
 #'
 #' # Example 4
-#' # calculate BRINDA inflammation adjustment values for a population when users
+#' # Calculate BRINDA inflammation adjustment values for a population when users
 #' # would like to apply user-defined CRP and AGP reference values
 #'
 #' sample_data_adj4 <-
