@@ -80,9 +80,9 @@ sample_data_adj <- BRINDA(dataset = sample_data,
 
 ## Citation
 
-Luo, H.;Addo, Y.;Jahan, A (2021) BRINDA: Computation of BRINDA Adjusted
-Micronutrient Biomarkers for inflammation. R package version 0.1.2,
-<https://github.com/hanqiluo/BRINDA>
+Luo, H.; Addo, Y.; Jahan, A (2021) BRINDA: Computation of BRINDA
+Adjusted Micronutrient Biomarkers for Inflammation. R package version
+0.1.2, <https://github.com/hanqiluo/BRINDA>
 
 ## Contributing
 
