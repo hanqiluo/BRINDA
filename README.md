@@ -12,20 +12,25 @@ series of functions to implement BRINDA adjustment
 
 ## Installation
 
-You can install the development version of BRINDA from
+``` r
+install.packages("BRINDA")
+```
+
+### Development version
+
+Alternatively, you can install the development version of BRINDA from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
+install.packages("devtools")
 devtools::install_github("hanqiluo/BRINDA")
-
 ```
 
 ## Example
 
-This is a basic example which shows you how to adjust retinol binding
-protein, retinol, ferritin, soluble transferrin receptor, and zinc using
-AGP and/or CRP.
+This is a basic example which shows you how to use the BRINDA package to
+adjust retinol binding protein, retinol, ferritin, soluble transferrin
+receptor, and zinc using AGP and/or CRP.
 
 ``` r
 library(BRINDA)
@@ -56,7 +61,7 @@ sample_data_adj <- BRINDA(dataset = sample_data,
 #> **** Population Group: PSC
 #> **** Output Format: SIMPLE
 #> -------------------------------------------
-#> ** Generated deciles of AGP/CRP based on inputs **
+#> ** Generate deciles of AGP/CRP based on inputs **
 #> **** log-AGP = -0.52
 #> **** log-CRP = -2.26
 #> -------------------------------------------
@@ -82,7 +87,7 @@ sample_data_adj <- BRINDA(dataset = sample_data,
 
 Luo, H.; Addo, Y.; Jahan, A (2021) BRINDA: Computation of BRINDA
 Adjusted Micronutrient Biomarkers for Inflammation. R package version
-0.1.2, <https://github.com/hanqiluo/BRINDA>
+0.1.3, <https://CRAN.R-project.org/package=BRINDA>
 
 ## Contributing
 
@@ -98,5 +103,5 @@ request](https://github.com/hanqiluo/BRINDA/pulls).
 The Authors thank all members of the BRINDA working group who helped in
 developing the BRINDA adjustment method. The authors also thank Charles
 D. Arnold, Fanny Sandalinas, Kevin Tang, and Lucas Gosdin for the
-extensive testing of the package and thank Joanne Arsenault for her
-editing and comments.
+extensive testing of the package, Joanne Arsenault for her editing and
+comments, and Jae Yeon Kim for his assistance with CRAN submission.
