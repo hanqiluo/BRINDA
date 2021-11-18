@@ -39,10 +39,13 @@ data(sample_data)
 
 sample_data_adj <- BRINDA(dataset = sample_data,
        retinol_binding_protein_varname = rbp,
-       retinol_varname = sr, ferritin_varname = sf,
+       retinol_varname = sr, 
+       ferritin_varname = sf,
        soluble_transferrin_receptor_varname = stfr,
-       zinc_varname = zinc, crp_varname = crp,
-       agp_varname = agp, population = Psc,
+       zinc_varname = zinc, 
+       crp_varname = crp,
+       agp_varname = agp, 
+       population = Psc,
        crp_ref_value_manual = ,
        agp_ref_value_manual = ,
        output_format = )
@@ -103,5 +106,6 @@ request](https://github.com/hanqiluo/BRINDA/pulls).
 The Authors thank all members of the BRINDA working group who helped in
 developing the BRINDA adjustment method. The authors also thank Charles
 D. Arnold, Fanny Sandalinas, Kevin Tang, and Lucas Gosdin for the
-extensive testing of the package, Joanne Arsenault for her editing and
-comments, and Jae Yeon Kim for his assistance with CRAN submission.
+extensive testing of the package, Joanne Arsenault and Christine
+McDonald for their editing and comments, and Jae Yeon Kim for his
+assistance with CRAN submission.
