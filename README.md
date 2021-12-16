@@ -1,4 +1,6 @@
 
+[![DOI](https://sandbox.zenodo.org/badge/414102388.svg)](https://sandbox.zenodo.org/badge/latestdoi/414102388)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # BRINDA
