@@ -733,8 +733,8 @@ brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo
         if(biomarker == "zn" & population_quo != "WRA"){
             # when AGP and CRP are both available
             if(exists("agp", dataset) & exists("crp", dataset)){
-                if((unique(dataset$zn_agp_cor) < -0.2 & unique(dataset$zn_agp_P_value) < 0.1) |
-                   (unique(dataset$zn_crp_cor) < -0.2 & unique(dataset$zn_crp_P_value) < 0.1)){
+                if((unique(dataset$zn_agp_cor) < -0.1 & unique(dataset$zn_agp_P_value) < 0.1) |
+                   (unique(dataset$zn_crp_cor) < -0.1 & unique(dataset$zn_crp_P_value) < 0.1)){
                     dataset <- brinda_adjustment_agp_crp(
                         dataset = dataset,
                         mn_biomarker_full_name = mn_biomarker_full_name,
@@ -755,8 +755,8 @@ brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo
 
             # when only AGP available
             if(exists("agp", dataset) & !exists("crp", dataset)){
-                if((unique(dataset$zn_agp_cor) < -0.2 & unique(dataset$zn_agp_P_value) < 0.1)){
-                    dataset <- brinda_adjustment_agp_crp(
+                if((unique(dataset$zn_agp_cor) < -0.1 & unique(dataset$zn_agp_P_value) < 0.1)){
+                    dataset <- brinda_adjustment_agp(
                         dataset = dataset,
                         mn_biomarker_full_name = mn_biomarker_full_name,
                         biomarker = biomarker)
@@ -774,7 +774,7 @@ brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo
 
             # when only CRP
             if(!exists("agp", dataset) & exists("crp", dataset)){
-                if((unique(dataset$zn_crp_cor) < -0.2 & unique(dataset$zn_crp_P_value) < 0.1)){
+                if((unique(dataset$zn_crp_cor) < -0.1 & unique(dataset$zn_crp_P_value) < 0.1)){
                     dataset <- brinda_adjustment_crp(
                         dataset = dataset,
                         mn_biomarker_full_name = mn_biomarker_full_name,

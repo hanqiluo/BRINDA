@@ -14,3 +14,7 @@ exists("crp", dataset)
 # BRINDA 0.1.3
 - Reduce the title to 65 characters
 - Add more description and DOI
+
+# BRINDA 0.1.4
+- To adjust for inflammation in Zinc, correlation should < -0.1 instead of -0.2
+- For zinc: applying adjustment for AGP when only AGP is available (instead of adjustment for AGP and CRP)
