@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 # BRINDA
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/hanqiluo/BRINDA/workflows/R-CMD-check/badge.svg)](https://github.com/hanqiluo/BRINDA/actions)
 <!-- badges: end -->
 
 The BRINDA R package is a user-friendly all-in-one R package that uses a series 
@@ -49,23 +50,161 @@ library(BRINDA)
 ## basic example code
 data(sample_data)
 
-sample_data_adj <- BRINDA(dataset = sample_data,
-       retinol_binding_protein_varname = rbp,
-       retinol_varname = sr, 
-       ferritin_varname = sf,
-       soluble_transferrin_receptor_varname = stfr,
-       zinc_varname = zinc, 
-       crp_varname = crp,
-       agp_varname = agp, 
-       population = Psc,
-       crp_ref_value_manual = ,
-       agp_ref_value_manual = ,
-       output_format = )
+#
+# Example 1: Preschool-age children (PSC) -----------------------------
+# calculate BRINDA inflammation adjustment values for preschool-age children (Assuming the dataset contain information of preschool-age children)
+
+#
+# Example 1.1 PSC: Both AGP and CRP are available 
+#
+final_data_psc <- BRINDA(
+    # Enter the name of the dataset 
+    dataset = sample_data, 
+    # Enter the variable name of retinol binding protein in your dataset (if available)
+    retinol_binding_protein_varname = rbp, 
+    # Enter the variable name of serum/plasma retinol in your dataset (if available)
+    retinol_varname = sr,
+    # Enter the variable name of serum/plasma ferritin in your dataset (if available)
+    ferritin_varname = sf,
+    # Enter the variable name of serum/plasma soluble transferrin receptor in your dataset (if available)
+    soluble_transferrin_receptor_varname = stfr, 
+    # Enter the variable name of serum/plasma zinc in your dataset (if available)
+    zinc_varname = zinc,
+    # Enter the variable name of CRP (unit must be mg/L) in your dataset (if available)
+    crp_varname = crp, 
+    # Enter the variable name of AGP (unit must be g/L) in your dataset (if available)
+    agp_varname = agp,
+    # Please write WRA, PSC, Other, or Manual. 
+population = Psc, 
+# leave crp_ref_value_manual empty, BRINDA R package will use an external crp  reference value for PSC
+    crp_ref_value_manual = , 
+    # leave agp_ref_value_manual empty, BRINDA R package will use an external agp reference value for PSC
+    agp_ref_value_manual = , 
+    # Please write FULL or SIMPLE (default output is SIMPLE, if users leave output_format empty)
+output_format = full)
+
+#
+# Example 1.2 PSC: Only AGP is available 
+#
+final_data_psc <- BRINDA(
+    # Enter the name of the dataset 
+    dataset = sample_data, 
+    # Enter the variable name of retinol binding protein in your dataset (if available)
+    retinol_binding_protein_varname = rbp, 
+    # Enter the variable name of serum/plasma retinol in your dataset (if available)
+    retinol_varname = sr,
+    # Enter the variable name of serum/plasma ferritin in your dataset (if available)
+    ferritin_varname = sf,
+    # Enter the variable name of serum/plasma soluble transferrin receptor in your dataset (if available)
+    soluble_transferrin_receptor_varname = stfr, 
+    # Enter the variable name of serum/plasma zinc in your dataset (if available)
+    zinc_varname = zinc,
+    # Enter the variable name of CRP (unit must be mg/L) in your dataset (if available)
+    # crp_varname = crp, 
+    # Enter the variable name of AGP (unit must be g/L) in your dataset (if available)
+    agp_varname = agp,
+    # Please write WRA, PSC, Other, or Manual. 
+population = Psc, 
+# leave crp_ref_value_manual empty, BRINDA R package will use an external crp  reference value for PSC
+    crp_ref_value_manual = , 
+    # leave agp_ref_value_manual empty, BRINDA R package will use an external agp reference value for PSC
+    agp_ref_value_manual = , 
+    # Please write FULL or SIMPLE (default output is SIMPLE, if users leave output_format empty)
+output_format = full)
+
+#
+# Example 1.3 PSC: Only CRP is available 
+#
+final_data_psc <- BRINDA(
+    # Enter the name of the dataset 
+    dataset = sample_data, 
+    # Enter the variable name of retinol binding protein in your dataset (if available)
+    retinol_binding_protein_varname = rbp, 
+    # Enter the variable name of serum/plasma retinol in your dataset (if available)
+    retinol_varname = sr,
+    # Enter the variable name of serum/plasma ferritin in your dataset (if available)
+    ferritin_varname = sf,
+    # Enter the variable name of serum/plasma soluble transferrin receptor in your dataset (if available)
+    soluble_transferrin_receptor_varname = stfr, 
+    # Enter the variable name of serum/plasma zinc in your dataset (if available)
+    zinc_varname = zinc,
+    # Enter the variable name of CRP (unit must be mg/L) in your dataset (if available)
+     crp_varname = crp, 
+    # Enter the variable name of AGP (unit must be g/L) in your dataset (if available)
+    # agp_varname = agp,
+    # Please write WRA, PSC, Other, or Manual. 
+population = Psc, 
+# leave crp_ref_value_manual empty, BRINDA R package will use an external crp  reference value for PSC
+    crp_ref_value_manual = , 
+    # leave agp_ref_value_manual empty, BRINDA R package will use an external agp reference value for PSC
+    agp_ref_value_manual = , 
+    # Please write FULL or SIMPLE (default output is SIMPLE, if users leave output_format empty)
+output_format = full)
+
+#
+# Example 2: Women of reproductive age (WRA) -----------------------------
+# calculate BRINDA inflammation adjustment values for non-pregnant women of reproductive age assuming the sample dataset contain information of women of reproductive age). 
+final_data_wra <- BRINDA(dataset = sample_data,
+    retinol_binding_protein_varname = rbp,
+    retinol_varname = sr,
+    ferritin_varname = sf,
+    soluble_transferrin_receptor_varname = stfr, 
+    zinc_varname = zinc,
+    crp_varname = crp, 
+    agp_varname = agp,
+    # Please write WRA, PSC, Other, or Manual.
+    population = WRA, 
+# leave crp_ref_value_manual empty, BRINDA R package will use an external crp reference value for WRA
+    crp_ref_value_manual = , 
+   # leave agp_ref_value_manual empty, BRINDA R package will use an external agp reference value for WRA
+    agp_ref_value_manual = , 
+    output_format = simple)
+
+#
+# Example 3: Other population groups ----------------------------------
+# calculate BRINDA inflammation adjustment values for other population assuming the study population is neither women of reproductive age nor preschool-age children
+#
+final_data_other <- BRINDA(dataset = sample_data,
+    retinol_binding_protein_varname = rbp,
+    retinol_varname = sr,
+    ferritin_varname = sf,
+    soluble_transferrin_receptor_varname = stfr, 
+    zinc_varname = zinc,
+    crp_varname = crp, 
+    agp_varname = agp,
+    population = OTHER, 
+# leave crp_ref_value_manual empty, BRINDA R package will calculate the lowest decile of CRP and use it as the crp reference value
+    crp_ref_value_manual = , 
+# leave agp_ref_value_manual empty, BRINDA R package will calculate the lowest decile of AGP and use it as the agp reference value
+   agp_ref_value_manual = , 
+   output_format = FULL)
+
+#
+# Example 4: User-defined CRP and AGP -------------------------------
+# calculate BRINDA inflammation adjustment values for a population when users would like to apply user-defined CRP and AGP reference values 
+final_data_manual <- BRINDA(dataset = sample_data,
+    retinol_binding_protein_varname = rbp,
+    retinol_varname = sr,
+    ferritin_varname = sf,
+    soluble_transferrin_receptor_varname = stfr, 
+    zinc_varname = zinc,
+    crp_varname = crp, 
+    agp_varname = agp,
+    # If users select Manual as the population group, 
+    # users can select their own AGP and CRP reference values for the BRINDA adjustment. 
+    population = MANUAL, 
+    # Enter a user-specified CRP reference value
+    crp_ref_value_manual = 0.2, 
+    # Enter a user-specified AGP reference value 
+    agp_ref_value_manual = 1.4, 
+    output_format = SIMPLE)
+
+
 
 ```
 
 ## Citation
-Luo, H.; Addo, Y.; Jahan, A (2021) BRINDA: Computation of BRINDA Adjusted Micronutrient Biomarkers for Inflammation. R package version 0.1.3, https://CRAN.R-project.org/package=BRINDA
+Luo, H.; Addo, Y.; Jahan, A (2021) BRINDA: Computation of BRINDA Adjusted Micronutrient Biomarkers for Inflammation. R package version 0.1.4, https://CRAN.R-project.org/package=BRINDA
 
 ## Contributing
 If you would like to report bugs, suggest features, or leave comments, please [create issues](https://github.com/hanqiluo/BRINDA/issues).
