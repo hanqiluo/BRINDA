@@ -639,7 +639,7 @@ brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo
         mn_biomarker_full_name <- mn_biomarker_full_variable_name_list[which(mn_biomarker_variable_name_list  == biomarker)]
 
         # sTfR and AGP
-        if(biomarker == "stfr" & population_quo %in% c("WRA" & "PSC") & exists("agp", dataset)){
+        if(biomarker == "stfr" & population_quo %in% c("WRA", "PSC") & exists("agp", dataset)){
             dataset <- brinda_adjustment_agp(
                 dataset = dataset,
                 mn_biomarker_full_name = mn_biomarker_full_name,
@@ -647,7 +647,7 @@ brinda_adjustment <- function(dataset, rbp_quo, sr_quo, sf_quo, stfr_quo, zn_quo
         }
 
         # sTfR and no AGP
-        if(biomarker == "stfr" & population_quo %in% c("WRA" & "PSC") & !exists("agp", dataset)){
+        if(biomarker == "stfr" & population_quo %in% c("WRA", "PSC") & !exists("agp", dataset)){
             dataset$biomarker_adj <- dataset$biomarker
             message("**** Adjusted Soluble Transferrin Receptor values are equal to unadjusted Soluble Transferrin Receptor values")
             message("****** BRINDA only uses AGP to adjust soluble transferrin receptor")
