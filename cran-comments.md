@@ -16,3 +16,9 @@ This is a resubmission. In this version I have:
 - Added description
 - Added DOI (the DOI checks showed "Found the following (possibly) invalid DOIs:", but the DOI is actually valid)
 
+## Update
+10/14/2022
+This is an update. In this version I have:
+- Update the condition to adjust sTfR.
+
+

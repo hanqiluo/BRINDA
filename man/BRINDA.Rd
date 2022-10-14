@@ -168,5 +168,5 @@ sample_data_adj4 <-
 
 }
 \author{
-Hanqi Luo, O.Yaw Addo, Afrin Jahan
+Hanqi Luo, O.Yaw Addo
 }
