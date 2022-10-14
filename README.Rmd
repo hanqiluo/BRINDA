@@ -204,7 +204,7 @@ final_data_manual <- BRINDA(dataset = sample_data,
 ```
 
 ## Citation
-Luo, H.; Addo, Y.; Jahan, A (2021) BRINDA: Computation of BRINDA Adjusted Micronutrient Biomarkers for Inflammation. R package version 0.1.4, https://CRAN.R-project.org/package=BRINDA
+Luo, H.; Addo, Y.; Geng, J (2022) BRINDA: Computation of BRINDA Adjusted Micronutrient Biomarkers for Inflammation. R package version 0.1.5, https://CRAN.R-project.org/package=BRINDA
 
 ## Contributing
 If you would like to report bugs, suggest features, or leave comments, please [create issues](https://github.com/hanqiluo/BRINDA/issues).
