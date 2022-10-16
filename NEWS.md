@@ -22,3 +22,6 @@ exists("crp", dataset)
 
 # BRINDA 0.1.5
 - Change the condition of adjusting for sTfR. sTfR is adjusted by AGP only in WRA and PSC population groups. sTfR can be adjusted by AGP or CRP in other/manual population groups.
+- 10/16/2022：moved URL: https://brinda-nutrition.org/publications/ to
+https://www.brinda-nutrition.org/publications)
+

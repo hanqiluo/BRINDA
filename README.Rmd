@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 The BRINDA R package is a user-friendly all-in-one R package that uses a series 
-of functions to implement BRINDA adjustment [method](https://brinda-nutrition.org/publications/) .
+of functions to implement BRINDA adjustment [method](https://www.brinda-nutrition.org/publications/) .
 
 ## Installation
 

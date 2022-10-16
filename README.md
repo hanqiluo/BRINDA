@@ -12,7 +12,7 @@
 
 The BRINDA R package is a user-friendly all-in-one R package that uses a
 series of functions to implement BRINDA adjustment
-[method](https://brinda-nutrition.org/publications/) .
+[method](https://www.brinda-nutrition.org/publications/) .
 
 ## Installation
 

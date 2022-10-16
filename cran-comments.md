@@ -21,4 +21,9 @@ This is a resubmission. In this version I have:
 This is an update. In this version I have:
 - Update the condition to adjust sTfR.
 
+10/16/2022
 
+── R CMD check results ──────────────────────────────────────────────────────────── BRINDA 0.1.5 ────
+Duration: 51.8s
+
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
